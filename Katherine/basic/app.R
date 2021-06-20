@@ -1,7 +1,7 @@
 ### ----------------------------------------------
 ### ----------------------------------------------
 ### This is an example of a simple Shiny app which
-### makes a figure that is customizable based on
+### makes a figure that is customisable based on
 ### some user input(s)
 ### ----------------------------------------------
 ### ----------------------------------------------
@@ -23,7 +23,7 @@
 source("00_initialize_app.R")
 
 
-# USER INTERFACE ---------------------------------------------------------------
+# USER INTERFACE (how the app looks) -------------------------------------------
 # Define UI for application that plots the Volcano Explosivity Index
 # for the most eruptive volcanoes in a chosen time slot
 
@@ -48,7 +48,7 @@ ui <- fluidPage(
             br()
             
             # space for your addition here:
-            #-------------------------------------------
+            #---------------------------------------------
             # some suggestions: 
             # 1. sliderInput or numericInput to select volcanoes that have erupted X number of times
             # 2. checkboxGroupInput to select eruption category
@@ -57,31 +57,31 @@ ui <- fluidPage(
             # HINT: see how to add control widgets here: https://shiny.rstudio.com/tutorial/written-tutorial/lesson3/
             ),
 
-        # Show the outputs from the server ----
+        # Show the outputs from the server ---------------
         mainPanel(
             
             # if you want to print the input value of "years" to check which values are being selected
-            #------------------------------------------------
+            #---------------------------------------------
             #verbatimTextOutput("years") 
             
             # ggplot of selected volcanoes' explosivity index
-            #------------------------------------------------
+            #---------------------------------------------
             plotOutput("ridgePlot", height = "600px"),
         )
     )
 )
 
-# SERVER -----------------------------------------------------------------------
+# SERVER (how the app works) ---------------------------------------------------
 # Define server logic required to draw a histogram
 server <- function(input, output) {
 
     # If you wanted to check which values were being input, you could
-    # uncomment this line along with line 55.
+    # uncomment this line along with line 65.
     #output$years <- renderPrint({ input$years })
 
     
     # make reactive dataset
-    # ------------------------------------------------
+    # ----------------------------------------------------------
     # subset volcano data with input year range
     eruptions_filtered <- reactive({eruptions[which(eruptions$start_year >= input$years[1] & eruptions$end_year <= input$years[2]),]})
     
