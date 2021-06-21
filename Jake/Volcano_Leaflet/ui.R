@@ -13,14 +13,14 @@ header <- dashboardHeader(
 # create dashboard body - this is the major UI element
 body <- dashboardBody(
     
-    # make first row of elements
+    # make first row of elements (actually, this will be the only row)
     fluidRow(
         
-        # make first column, 25% of page - 3 of 12 columns
+        # make first column, 25% of page - width = 3 of 12 columns
         column(width = 3,
                
                
-               # box 1 : input for selecting volvano type
+               # box 1 : input for selecting volcano type
                #-----------------------------------------------
                box(width = NULL, status = "primary",
                    title  = "Selection Criteria", solidHeader = T, 
@@ -37,6 +37,8 @@ body <- dashboardBody(
                            no = tags$i(class = "fa fa-square-o", 
                                        style = "color: steelblue"))
                    ),
+                   
+                   
                    
                    br(),
                    
@@ -64,7 +66,7 @@ body <- dashboardBody(
                box(width = NULL, status = "primary",
                    solidHeader = TRUE, collapsible = T,
                    title = "Volcanoes by Continent",
-                   plotOutput("continentplot",
+                   plotOutput("continentplot", # this calls to object continentplot that is made in the server page
                               height = 350)
                )
         ),
@@ -74,7 +76,8 @@ body <- dashboardBody(
                
                # Box 3: leaflet map
                box(width = NULL, background = "light-blue", 
-                   leafletOutput("volcanomap", height = 760)
+                   leafletOutput("volcanomap", height = 760) 
+                   # this draws element called volcanomap, which is created in the "server" tab
                )
         )
 
@@ -84,7 +87,6 @@ body <- dashboardBody(
 
 # compile dashboard elements
 dashboardPage(
-   # skin = "black",
     header = header,
     dashboardSidebar(disable = TRUE), # here, we only have one tab, so we don't need a sidebar
     body = body

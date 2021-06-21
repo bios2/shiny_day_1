@@ -9,7 +9,10 @@ function(input, output, session) {
     # subset volcano data with input check boxes
     selected_volcanoes <- reactive({
         volcano %>%
+            # select only volcanoes in the selected volcano type (by checkboxes in the UI)
             filter(volcano_type_consolidated %in% input$volcano_type) %>%
+        
+            # change volcano type into factor (this makes plotting it more consistent)
             mutate(volcano_type_consolidated = factor(volcano_type_consolidated,
                                                       levels = c("Stratovolcano" , "Shield",  "Cone",   "Caldera", "Volcanic Field",
                                                                  "Complex" ,  "Other" ,  "Lava Dome" , "Submarine" ) ) )
@@ -21,6 +24,7 @@ function(input, output, session) {
     #------------------------------------------------------------
    output$continentplot <- renderPlot({
         
+      # create basic barplot
        barplot <- ggplot(data = volcano,
                          aes(x=continent,
                              fill = volcano_type_consolidated))+
@@ -32,9 +36,10 @@ function(input, output, session) {
            labs(x=NULL, y=NULL, title = NULL) +
            theme(axis.text.x = element_text(angle=45,hjust=1))
        
+       
        # update ggplot if selected volcanoes object exists 
        # basically this makes it not mess up when nothing is selected
-       if(nrow(selected_volcanoes()) >1){
+       if(nrow(selected_volcanoes()) >1){ 
            barplot <- barplot +
                geom_bar(data = selected_volcanoes(), show.legend = F) +
                scale_fill_manual(values = RColorBrewer::brewer.pal(9,"Set1"), 

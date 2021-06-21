@@ -1,8 +1,7 @@
 ### ----------------------------------------------
 ### ----------------------------------------------
 ### This script loads and wrangles data 
-### CSV spreadsheets of model outputs, 
-### and shapefiles of areas of interest
+### that we will use
 ### ----------------------------------------------
 ### ----------------------------------------------
 
@@ -23,6 +22,7 @@ library(countrycode)
 volcano <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-12/volcano.csv') 
 
 volcano <- volcano %>%
+  # select columns of interest
   select(volcano_name, 
          primary_volcano_type,
          last_eruption_year, 
@@ -36,7 +36,7 @@ volcano <- volcano %>%
          population_within_30_km,
          population_within_100_km
          ) %>%
-  
+  # change last eruption year to numeric
   mutate(last_eruption_year = as.numeric(last_eruption_year),
          # consolidate volcano types
          volcano_type_consolidated = case_when(grepl("Caldera",primary_volcano_type) ~ "Caldera",
