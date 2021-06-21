@@ -22,6 +22,7 @@ library(countrycode)
 volcano <- readr::read_csv('https://raw.githubusercontent.com/rfordatascience/tidytuesday/master/data/2020/2020-05-12/volcano.csv') 
 
 volcano <- volcano %>%
+  
   # select columns of interest
   select(volcano_name, 
          primary_volcano_type,
@@ -36,8 +37,10 @@ volcano <- volcano %>%
          population_within_30_km,
          population_within_100_km
          ) %>%
+  
   # change last eruption year to numeric
   mutate(last_eruption_year = as.numeric(last_eruption_year),
+         
          # consolidate volcano types
          volcano_type_consolidated = case_when(grepl("Caldera",primary_volcano_type) ~ "Caldera",
                           grepl("strato",str_to_lower(primary_volcano_type)) ~ "Stratovolcano",
@@ -52,6 +55,7 @@ volcano <- volcano %>%
   # add a continent column
   # some countries have two values, like "Chile-Argentina" - here, we will just take the first, separated by "-"
   mutate(country2 = str_extract(country,"[^-]+")) %>% 
+  
   # create a continent column using `countrycode` package
   mutate(continent = countrycode(sourcevar = country2,
                                   origin = "country.name",
@@ -59,6 +63,8 @@ volcano <- volcano %>%
                                  custom_match = c(`Antarctica` = "Antarctica",
                                                   `Undersea Features` = "Under Sea")
                                  ))  %>%
+  
+  # change continent into factor (this helps keep order consistent)
   mutate(  continent  = factor(continent, levels = c("Americas","Asia","Europe","Oceania","Africa","Antarctica","Under Sea")))
 
 

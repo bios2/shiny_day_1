@@ -1,7 +1,8 @@
 
 # Source tabs -------------------------------------------------------------
-# source the script that uploads and cleans data, and installs packages
+# source the script that uploads and cleans data and loads packages
 source("00_initialize_app.R")
+
 
 # make dashboard header
 header <- dashboardHeader(
@@ -30,32 +31,36 @@ body <- dashboardBody(
                        inputId = "volcano_type",
                        label = "Volcano Type",
                        choices = c("Stratovolcano" , "Shield" ,"Cone" ,   "Caldera" ,    "Volcanic Field",
-                                    "Complex" , "Other",   "Lava Dome"  , "Submarine"    ),
+                                   "Complex" , "Other",   "Lava Dome"  , "Submarine"    ),
                        checkIcon = list(
                            yes = tags$i(class = "fa fa-check-square", 
                                         style = "color: steelblue"),
                            no = tags$i(class = "fa fa-square-o", 
                                        style = "color: steelblue"))
-                   ),
-                   
+                   ), # end checkboxGroupButtons
                    
                    
                    br(),
                    
                    strong("Space for your addition here:"),
                    
-                   br(), br(), br(), br(), br(), br()
+                   br(), br(), br(), br(), br(), br(), # add a bunch of line breaks to leave space. these can be removed
                    
                    # space for your addition here:
                    #-------------------------------------------
-                   # some suggestions: 
-                   # 1. slider bar of volcanoes by population within xx km
-                   # 2. slider input of last eruption year
-                   # 3. slider of elevation
-                   # 4. checkbox input of evidence category
+                   # --- --- --- ---   HINT   --- --- --- --- 
+                   # here, you will paste code for another Widget to filter volcanoes on the map.
+                   # you'll need to paste code for some widget, name it, then call it at the top of the server page
+                   # when we are filtering the selected_volcanoes() reactive object. 
                    
-                   # HINT: see available widgets here: http://shinyapps.dreamrs.fr/shinyWidgets/
+                   #  --- --- --- some suggestions: --- --- ---
+                   # 1. slider bar to only show volcanoes with "population over xxx within 30 km"
+                   # 2. slider input to show only volcanoes that have erupted in the last xxx years
+                   # 3. slider input to only show volcanoes taller than xxx elevation
+                   # 4. checkbox input to only show volcanoes in this evidence category
                    
+                   # see available widgets here: http://shinyapps.dreamrs.fr/shinyWidgets/
+
                    
                ), # end box 1
                
@@ -68,27 +73,27 @@ body <- dashboardBody(
                    title = "Volcanoes by Continent",
                    plotOutput("continentplot", # this calls to object continentplot that is made in the server page
                               height = 350)
-               )
-        ),
-        
-        # first column - 75% of page (9 of 12 columns)
+               ) # end box 2
+        ), # end column 1
+         
+        # second column - 75% of page (9 of 12 columns)
         column(width = 9,
                
                # Box 3: leaflet map
                box(width = NULL, background = "light-blue", 
                    leafletOutput("volcanomap", height = 760) 
                    # this draws element called volcanomap, which is created in the "server" tab
-               )
-        )
-
-    )
-)
+               ) # end box with map
+        ) # end second column
+        
+    ) # end fluidrow
+) # end body
 
 
 # compile dashboard elements
 dashboardPage(
     header = header,
-    dashboardSidebar(disable = TRUE), # here, we only have one tab, so we don't need a sidebar
+    sidebar = dashboardSidebar(disable = TRUE), # here, we only have one tab, so we don't need a sidebar
     body = body
 )
 
