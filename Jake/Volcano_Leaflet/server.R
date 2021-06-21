@@ -60,7 +60,7 @@ function(input, output, session) {
     output$volcanomap <- renderLeaflet({
 
         # add blank leaflet map 
-        leaflet('map', options = leafletOptions(minZoom = 0, maxZoom = 7, zoomControl = TRUE)) %>%
+        leaflet('map', options = leafletOptions(minZoom = 0, maxZoom = 10, zoomControl = TRUE)) %>%
             addProviderTiles("CartoDB.VoyagerNoLabels") %>%
             setView(lng = -30, lat = 40, zoom = 3)
 
