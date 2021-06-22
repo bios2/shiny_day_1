@@ -72,14 +72,14 @@ ui <- fluidPage(
 )
 
 # SERVER (how the app works) ---------------------------------------------------
-# Define server logic required to draw a histogram
+# Define server logic required to make your output(s)
 server <- function(input, output) {
 
     # If you wanted to check which values were being input, you could
     # uncomment this line along with line 65.
     #output$years <- renderPrint({ input$years })
-
     
+  
     # make reactive dataset
     # ----------------------------------------------------------
     # subset volcano data with input year range
