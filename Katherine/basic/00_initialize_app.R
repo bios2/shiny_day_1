@@ -28,3 +28,5 @@ df_sort <- df_sort[order(df_sort$mean_vei),]
 
 # convert to factor so ggplot2 uses this order when plotting the variable
 eruptions$volcano_name <- factor(eruptions$volcano_name, levels = df_sort$volcano_name)
+
+

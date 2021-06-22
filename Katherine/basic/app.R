@@ -20,7 +20,7 @@
 
 # PACKAGES & DATA PREP: Source tabs --------------------------------------------
 # source the script that uploads and cleans data, and loads packages
-source("00_initialize_app.R")
+source(here::here("Katherine/", "basic", "00_initialize_app.R"))
 
 
 # USER INTERFACE (how the app looks) -------------------------------------------
@@ -31,7 +31,6 @@ ui <- fluidPage(
 
     # Application title ----
     titlePanel("Exploring volcano explosivity"),
-
 
     # Input interface ----
 
@@ -83,7 +82,11 @@ server <- function(input, output) {
     # make reactive dataset
     # ----------------------------------------------------------
     # subset volcano data with input year range
-    eruptions_filtered <- reactive({eruptions[which(eruptions$start_year >= input$years[1] & eruptions$end_year <= input$years[2]),]})
+    eruptions_filtered <- reactive({
+      
+      subset(eruptions, start_year >= input$years[1] & end_year <= input$years[2])
+      
+      })
     
     
     # filter the dataset to avoid overloading the plot (static right now)
