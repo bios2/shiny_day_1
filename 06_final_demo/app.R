@@ -70,7 +70,8 @@ ui <- fluidPage(
             
             # ggplot of selected volcanoes' explosivity index
             #---------------------------------------------
-
+            plotOutput("ridgePlot"),
+            # our table!
             tableOutput("erupt_table")
             
         )
@@ -103,6 +104,29 @@ server <- function(input, output) {
       
       })
     
+    # make output element (ridgeplot)
+    #------------------------------------------------------------
+    output$ridgePlot <- renderPlot({
+      
+      p <- ggplot(data = eruptions_filtered(),
+                  aes(x = vei,
+                      y = volcano_name)#,
+                  #fill = volcano_name)
+      ) +
+        geom_density_ridges(
+          size = .5 # line width
+        ) +
+        labs(x = "Volcano Explosivity Index", y = "") +
+        #theme_classic() + # make sure you don't have a ggplot theme!
+        theme(legend.position = "none",
+              axis.text = element_text(size = 12, face = "bold"),
+              axis.title = element_text(size = 14, face = "bold"))
+      # print the plot
+      p
+    })
+ 
+    # make output element (table)
+    #------------------------------------------------------------   
     output$erupt_table <- renderTable({
       head(eruptions_filtered())
       })
