@@ -69,9 +69,7 @@ ui <- fluidPage(
             #verbatimTextOutput("years") 
             
             # ggplot of selected volcanoes' explosivity index
-            #---------------------------------------------
-            plotOutput("ridgePlot"),
-            
+
             tableOutput("erupt_table")
             
         )
@@ -107,25 +105,6 @@ server <- function(input, output) {
     output$erupt_table <- renderTable({
       head(eruptions_filtered())
       })
-    
-    output$ridgePlot <- renderPlot({
-      
-      p <- ggplot(data = eruptions_filtered(),
-                  aes(x = vei,
-                      y = volcano_name)#,
-                  #fill = volcano_name)
-      ) +
-        geom_density_ridges(
-          size = .5 # line width
-        ) +
-        labs(x = "Volcano Explosivity Index", y = "") +
-        #theme_classic() + # make sure you don't have a ggplot theme!
-        theme(legend.position = "none",
-              axis.text = element_text(size = 12, face = "bold"),
-              axis.title = element_text(size = 14, face = "bold"))
-      # print the plot
-      p
-    })
 }
 
 # Run the application
