@@ -8,7 +8,6 @@
 
 # PACKAGES & DATA PREP: Source tabs --------------------------------------------
 # source the script that uploads and cleans data, and loads packages
-source("00_initialize_app.R")
 
 
 # USER INTERFACE (how the app looks) -------------------------------------------

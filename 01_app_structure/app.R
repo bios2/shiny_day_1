@@ -6,19 +6,20 @@
 ### ----------------------------------------------
 ### ----------------------------------------------
 
+### GOAL: learn how to lay out a shiny app
+### Can add Sidebarlayout to help organization
+
 # PACKAGES & DATA PREP: Source tabs --------------------------------------------
 # source the script that uploads and cleans data, and loads packages
-source("00_initialize_app.R")
 
-
+library(shiny)
 # USER INTERFACE (how the app looks) -------------------------------------------
 
 ui <- fluidPage(
 
         # Application title ----
         titlePanel("Exploring volcano explosivity"),
-    
-    
+
         # Input interface ----
     
         sliderInput("years", # this is important! it's the id your server needs to use the selected value
@@ -30,7 +31,7 @@ ui <- fluidPage(
         # Show the outputs from the server ---------------
     
         # print out the years that were chosen
-          verbatimTextOutput("years") 
+          verbatimTextOutput("year_chosen") 
 
     )
 
@@ -40,7 +41,7 @@ ui <- fluidPage(
 
 server <- function(input, output) {
 
-    output$years <- renderPrint({input$years}) 
+    output$year_chosen <- renderPrint({input$years}) 
     
 }
 

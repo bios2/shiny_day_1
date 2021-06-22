@@ -1,3 +1,4 @@
+## code to prepare `DATASET` dataset goes here
 ### ----------------------------------------------
 ### ----------------------------------------------
 ### This script loads and wrangles data
@@ -8,11 +9,7 @@
 
 ### Load Packages -------------------------
 
-library(shiny)
-library(ggplot2)
-library(ggridges)
-library(dplyr)
-library(shiny)
+library(tidyverse)
 
 # Import and clean data  ----------------------------------------
 
@@ -28,3 +25,5 @@ df_sort <- df_sort[order(df_sort$mean_vei),]
 
 # convert to factor so ggplot2 uses this order when plotting the variable
 eruptions$volcano_name <- factor(eruptions$volcano_name, levels = df_sort$volcano_name)
+
+readr::write_rds(eruptions, "data/eruptions.rds")

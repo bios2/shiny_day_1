@@ -20,7 +20,12 @@
 
 # PACKAGES & DATA PREP: Source tabs --------------------------------------------
 # source the script that uploads and cleans data, and loads packages
-source(here::here("Katherine/", "basic", "00_initialize_app.R"))
+
+library(shiny)
+library(ggridges)
+library(ggplot2)
+library(here)
+library(readr)
 
 
 # USER INTERFACE (how the app looks) -------------------------------------------
@@ -65,7 +70,7 @@ ui <- fluidPage(
             
             # ggplot of selected volcanoes' explosivity index
             #---------------------------------------------
-            plotOutput("ridgePlot", height = "600px"),
+            
         )
     )
 )
@@ -74,9 +79,17 @@ ui <- fluidPage(
 # Define server logic required to make your output(s)
 server <- function(input, output) {
 
+  eruptions <- readr::read_rds(here::here("data", "eruptions.rds"))
     # If you wanted to check which values were being input, you could
     # uncomment this line along with line 65.
     #output$years <- renderPrint({ input$years })
+  
+  # filter the dataset to avoid overloading the plot (static right now)
+  # -----------------------------------------------------------
+  # option to make this reactive (see the UI suggestions above!)
+  # subset to volcanoes that have erupted more than X times
+  eruptions <- eruptions[which(eruptions$volcano_name %in% names(which(table(eruptions$volcano_name) > 30))),]
+  
     
   
     # make reactive dataset
@@ -89,33 +102,7 @@ server <- function(input, output) {
       })
     
     
-    # filter the dataset to avoid overloading the plot (static right now)
-    # -----------------------------------------------------------
-    # option to make this reactive (see the UI suggestions above!)
-    # subset to volcanoes that have erupted more than X times
-    eruptions <- eruptions[which(eruptions$volcano_name %in% names(which(table(eruptions$volcano_name) > 30))),]
     
-    
-    # make output element (ridgeplot)
-    #------------------------------------------------------------
-    output$ridgePlot <- renderPlot({
-
-      p <- ggplot(data = eruptions_filtered(),
-               aes(x = vei,
-                   y = volcano_name,
-                   fill = volcano_name)) +
-            geom_density_ridges(
-                alpha = .5, # transparency
-                size = .1 # line width
-                ) +
-            labs(x = "Volcano Explosivity Index", y = "") +
-            theme_classic() +
-            theme(legend.position = "none",
-                  axis.text = element_text(size = 11),
-                  axis.title = element_text(size = 14, face = "bold")) 
-      # print the plot
-      p
-    })
 }
 
 # Run the application
