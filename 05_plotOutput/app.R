@@ -68,6 +68,12 @@ ui <- fluidPage(
             #---------------------------------------------
             #verbatimTextOutput("years") 
             
+            # ggplot of selected volcanoes' explosivity index
+            #---------------------------------------------
+            plotOutput("ridgePlot"),
+            
+            tableOutput("erupt_table")
+            
         )
     )
 )
@@ -87,9 +93,39 @@ server <- function(input, output) {
   # subset to volcanoes that have erupted more than X times
   eruptions <- eruptions[which(eruptions$volcano_name %in% names(which(table(eruptions$volcano_name) > 30))),]
   
-  # browser()
     
-  # observe(print(eruptions()))
+  
+    # make reactive dataset
+    # ----------------------------------------------------------
+    # subset volcano data with input year range
+    eruptions_filtered <- reactive({
+      
+      subset(eruptions, start_year >= input$years[1] & end_year <= input$years[2])
+      
+      })
+    
+    output$erupt_table <- renderTable({
+      head(eruptions_filtered())
+      })
+    
+    output$ridgePlot <- renderPlot({
+      
+      p <- ggplot(data = eruptions_filtered(),
+                  aes(x = vei,
+                      y = volcano_name)#,
+                  #fill = volcano_name)
+      ) +
+        geom_density_ridges(
+          size = .5 # line width
+        ) +
+        labs(x = "Volcano Explosivity Index", y = "") +
+        #theme_classic() + # make sure you don't have a ggplot theme!
+        theme(legend.position = "none",
+              axis.text = element_text(size = 12, face = "bold"),
+              axis.title = element_text(size = 14, face = "bold"))
+      # print the plot
+      p
+    })
 }
 
 # Run the application

@@ -87,9 +87,17 @@ server <- function(input, output) {
   # subset to volcanoes that have erupted more than X times
   eruptions <- eruptions[which(eruptions$volcano_name %in% names(which(table(eruptions$volcano_name) > 30))),]
   
-  # browser()
+  
+  
+  # make reactive dataset
+  # ----------------------------------------------------------
+  # subset volcano data with input year range
+  eruptions_filtered <- reactive({
     
-  # observe(print(eruptions()))
+    subset(eruptions, start_year >= input$years[1] & end_year <= input$years[2])
+    
+  })
+  
 }
 
 # Run the application
