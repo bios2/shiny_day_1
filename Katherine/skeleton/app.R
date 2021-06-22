@@ -21,19 +21,17 @@ ui <- fluidPage(
 
     # Input interface ----
 
-            sliderInput("years", # this is important! it's the id your server needs to use the selected value
-                        label = h3("Years"),
-                        min = 1900, max = 2020, # maximum range that can be selected
-                        value = c(2010, 2020) # this is the default slider position
-            ),
+    sliderInput("years", # this is important! it's the id your server needs to use the selected value
+                label = h3("Years"),
+                min = 1900, max = 2020, # maximum range that can be selected
+                value = c(2010, 2020) # this is the default slider position
+    ),
 
-        # Show the outputs from the server ---------------
-        mainPanel(
-            
-          # print out the years that were chosen
-            verbatimTextOutput("years") 
-            
-        )
+    # Show the outputs from the server ---------------
+
+    # print out the years that were chosen
+      verbatimTextOutput("years") 
+
     )
 
 
